@@ -3,65 +3,91 @@
  *
  *  Created on: 28 Oct 2022
  *      Author: jole
+ *      
+ * dtd is a command line utility to convert between deg/min/sec and decimal degrees, and vice versa
+ *  - expanded to include celcuis-fahrenheit conversion
  */
 
-using namespace std;
 
-#include <iostream>
-#include <stdlib.h>
-#include <getopt.h>
 #include <math.h>
+#include <stdio.h>
+#include <getopt.h>
+#include "source/degtodec.h"
+
+
+void printUsage(void);
+
 
 
 
 int main(int argc, char *argv[])
 {
 	int		c, optionIndex, deg, min, sec;
-	float	decdeg = 0L, f;
+	float	input = 0L, output;
 	char	*shortOptions = (char*)"";
 	
 	struct option longOptions[] = {
 		{"degtodec", required_argument, NULL, 1},
 		{"dectodeg", required_argument, NULL, 2},
+		{"ctof", required_argument, NULL, 3},
+		{"ftoc", required_argument, NULL, 4},
+		{"atob", required_argument, NULL, 5},
 		{0, 0, 0, 0}
 	};
 	
 	printf("\ndtd, a command line converting utility from Jon Leithe!\n\n");
 	if(argc < 2){
-		printf("\nUsage: dtd --degtodec <deg>.<min>.<sec>\n");
-		printf("Usage: dtd --dectodeg <decimaldegrees>\n\n");
+		printf("To few arguments\n");
+		printUsage();
 		return (2);
 	}
 	
 	
+	
 	while((c = getopt_long(argc, argv, shortOptions, longOptions, &optionIndex)) != -1){
 		switch(c){
-			case 1:		deg = atoi(optarg);
-						while(*optarg++ != '.');
-						min = atoi(optarg);
-						while(*optarg++ != '.');
-						sec = atoi(optarg);
-						decdeg = deg + min/60.0 + sec/3600.0;
-						printf("%d°%d'%d'' = %f°\n", deg, min, sec, decdeg);
+			case 1:		{
+						dtd d(optarg, degToDec);
+						printf("%d°%d'%d'' =  %f°\n", d.getDeg(), d.getMin(), d.getSec(), d.getDecDegrees());
 						break;
-			case 2:		decdeg = atof(optarg);
+						}
+			case 2:		input = atof(optarg);
 						deg = atoi(optarg);
 						while(*optarg++ != '.');
 						*optarg--;
-						min = round(f = atof(optarg) * 60.0);
+						min = round(output = atof(optarg) * 60.0);
 						//while(*optarg++ != '.');
 						//*optarg--;
-						f -= min;
-						sec = round(f * 60);
-						printf("%f° = %d°%d'%d''\n", decdeg, deg, min, sec);
+						output -= min;
+						sec = round(output * 60);
+						printf("%f° = %d°%d'%d''\n\n", input, deg, min, sec);
+						break;
+			case 3:		input = atof(optarg);
+						output = ((input * 9/5) + 32);
+						printf("%f°C = %f°F\n\n", input, output);
+						break;
+			case 4:		input = atof(optarg);
+						output = ((input - 32) * 5/9);
+						printf("%f°F = %f°C\n\n", input, output);
+						break;
+			case 5:		//invoceatob()
 						break;
 			default:	printf("No option set!\n");
-						printf("Usage: dtd --degtodec <deg>.<min>.<sec>\n");
-						printf("Usage: dtd --dectodeg <decimaldegrees>\n");
+						printUsage();
 						break;
 		}
 	}
 	
 
 	return 0;
+}
+
+
+
+void printUsage(void)
+{
+	printf("Usage: dtd --degtodec <deg>.<min>.<sec>\n");
+	printf("       dtd --dectodeg <decimaldegrees>\n");
+	printf("       dtd --ctof <degrees Celcius>\n");
+	printf("       dtd --ftoc <degrees Fahrenheit>\n");
 }
