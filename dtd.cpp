@@ -6,6 +6,7 @@
  *      
  * dtd is a command line utility to convert between deg/min/sec and decimal degrees, and vice versa
  *  - expanded to include celcuis-fahrenheit conversion
+ *  - restructuring into c++ classes
  */
 
 
@@ -35,7 +36,7 @@ int main(int argc, char *argv[])
 		{0, 0, 0, 0}
 	};
 	
-	printf("\ndtd, a command line converting utility from Jon Leithe!\n\n");
+	printf("\ndtd, a command line converting utility by Jon Leithe!\n\n");
 	if(argc < 2){
 		printf("To few arguments\n");
 		printUsage();
