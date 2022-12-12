@@ -16,8 +16,9 @@
 enum	mode {degToDec, decToDeg};
 
 class dtd {
-	int		deg, min, sec;
+	int		deg, min;
 	float	decDegrees;
+	double	sec;
 	
 	char	*inputString;
 	
@@ -25,9 +26,9 @@ public:
 	dtd(char *input, mode m);
 	
 	
-	int getDeg(void){return deg;}
-	int getMin(void){return min;}
-	int getSec(void){return sec;}
+	int		getDeg(void){return deg;}
+	int		getMin(void){return min;}
+	double	getSec(void){return sec;}
 	
 	float getDecDegrees(void){return decDegrees;}
 	

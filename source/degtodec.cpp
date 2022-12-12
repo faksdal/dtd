@@ -19,10 +19,12 @@ dtd::dtd(char *input, mode m)
 	
 	switch(m){
 		case degToDec:	deg = atoi(input);
-						while(*input++ != '.');
+						while(*input++ != '-');
 						min = atoi(input);
-						while(*input++ != '.');
-						sec = atoi(input);
+						while(*input++ != '-');
+						//printf("Input: %s\n", input);
+						sec = atof(input);
+						//printf("Sec: %f\n", sec);
 						decDegrees = deg + min/60.0 + sec/3600.0;
 						break;
 		case decToDeg:	break;
