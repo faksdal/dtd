@@ -24,6 +24,7 @@ void printUsage(void);
 int main(int argc, char *argv[])
 {
 	int		c, optionIndex, deg, min, sec;
+	float	float_sec;
 	float	input = 0L, output;
 	char	*shortOptions = (char*)"";
 	
@@ -59,9 +60,11 @@ int main(int argc, char *argv[])
 						min = round(output = atof(optarg) * 60.0);
 						//while(*optarg++ != '.');
 						//*optarg--;
+						printf("\n\n Output: %f", output);
 						output -= min;
-						sec = round(output * 60);
-						printf("%f° = %d°%d'%d''\n\n", input, deg, min, sec);
+						printf("\n\n Output: %f\n", output);
+						float_sec = (output*60);
+						printf("%f° = %d°%d'%f''\n\n", input, deg, min, float_sec);
 						break;
 			case 3:		input = atof(optarg);
 						output = ((input * 9/5) + 32);
